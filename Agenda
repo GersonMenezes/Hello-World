@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct tipo{
+char nome[30];
+int idade;
+int cell;
+};
+
+void menu();
+void imprimeBuffer(struct tipo *pBuffer, int n);
+
+int main(){
+
+void *pBuffer = (struct tipo*) malloc(sizeof(int) +(2*sizeof(int));
+    if(pBuffer != NULL) printf("Alocado com sucesso\n");
+int *x = pBuffer, *n;
+
+    while(*x != 0){
+    *x = menu();
+    option();
+}
+
+
+imprimeBuffer();
+
+free(pBuffer);
+
+return 0;
+}
+
+
+int menu(x){
+
+    printf("Diga a opcao desejada: \n");
+    printf("0 para sair\n1 para adicionar pessoa\n2 para retirar pessoa\n3 para ver a lista\n4 para buscar alguem\n---------------------------------------------\n");
+    scanf("%d", &*(int*)x);
+        
+        switch (*x){
+        case 0:
+            return 0;
+            break;
+        case 1:
+            adiciona();
+            break;
+        case 2:
+            retira();
+            break;
+        case 3:
+            listar();
+            break;
+        case 4:
+            buscar();
+            break;
+        default:
+            printf("Nenhuma alternativa correta");
+            return 1;
+        }
+}
