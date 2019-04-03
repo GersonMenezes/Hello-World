@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct tipo{
+int x;
+float y;
+double z;
+};
+
+void imprimeBuffer(struct tipo *pBuffer, int n);
+
+int main(){
+
+void *pBuffer;
+int nTotal = 3;
+pBuffer = (struct tipo*) malloc(nTotal*sizeof(struct tipo));
+    if(pBuffer != NULL) printf("Alocado com sucesso\n");
+
+
+imprimeBuffer(pBuffer, nTotal);
+
+free(pBuffer);
+
+return 0;
+}
+
+void imprimeBuffer(struct tipo *pBuffer, int n){
+
+    void *p, *tmp;
+    p = tmp = pBuffer;
+
+    for(int c = 0; c<n; c++){
+        tmp = p + c * (sizeof(int) + sizeof(float) + sizeof(double));
+        *(int*)tmp = 10+c;
+        tmp += sizeof(int);
+        *(float*)tmp = 10.0+c;
+        tmp += sizeof(float);
+        *(double*)tmp = 15.5+c;
+        }
+
+    for(int c = 0; c<n; c++){
+        tmp = p + c * (sizeof(int) + sizeof(float) + sizeof(double));
+        printf("%d int: %d  ", c+1, *(int*)tmp);
+        tmp += sizeof(int);
+        printf("%d float: %.2f  ", c+1, *(float*)tmp);
+        tmp += sizeof(float);
+        printf("%d double: %.2lf  ", c+1, *(double*)tmp);
+    }
+}
