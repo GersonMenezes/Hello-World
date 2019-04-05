@@ -7,35 +7,37 @@ int idade;
 int cell;
 };
 
-void menu();
-void imprimeBuffer(struct tipo *pBuffer, int n);
+int menu();
+void retira();
+void lista();
+void busca();
+void adiciona();
 
 int main(){
 
-void *pBuffer = (struct tipo*) malloc(sizeof(int) +(2*sizeof(int));
+void *pBuffer = (struct tipo*) malloc(2*sizeof(int));
     if(pBuffer != NULL) printf("Alocado com sucesso\n");
 int *x = pBuffer, *n;
 
     while(*x != 0){
-    *x = menu();
-    option();
-}
+    *x = menu(x);
+    }
 
-
-imprimeBuffer();
-
+printf("Valor de X=%d",*x);
 free(pBuffer);
+    if(pBuffer == NULL) {
+            printf("\n\nMemoria limpada com sucesso");}
 
 return 0;
 }
 
 
-int menu(x){
+int menu(int *x){
 
     printf("Diga a opcao desejada: \n");
-    printf("0 para sair\n1 para adicionar pessoa\n2 para retirar pessoa\n3 para ver a lista\n4 para buscar alguem\n---------------------------------------------\n");
+    printf("\n0 para sair\n1 Adicionar\n2 Retirar\n3 Listar\n4 Buscar\n-------------------------------------\n");
     scanf("%d", &*(int*)x);
-        
+
         switch (*x){
         case 0:
             return 0;
@@ -47,13 +49,18 @@ int menu(x){
             retira();
             break;
         case 3:
-            listar();
+            lista();
             break;
         case 4:
-            buscar();
+            busca();
             break;
         default:
             printf("Nenhuma alternativa correta");
             return 1;
         }
 }
+
+void retira(){}
+void lista(){}
+void busca(){}
+void adiciona(){}
