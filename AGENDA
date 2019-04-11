@@ -7,20 +7,22 @@ int idade;
 int cell;
 };
 
-int menu();
+int menu(int *x, void *pBuffer, int *n);
 void retira();
 void lista();
 void busca();
-void adiciona();
+void adiciona(void *pBuffer, int *n);
 
 int main(){
 
 void *pBuffer = (struct tipo*) malloc(2*sizeof(int));
     if(pBuffer != NULL) printf("Alocado com sucesso\n");
-int *x = pBuffer, *n;
+int *x = pBuffer, *n = pBuffer;
+n += sizeof(int);
+*n = 0;
 
     while(*x != 0){
-    *x = menu(x);
+    *x = menu(x, pBuffer, n);
     }
 
 printf("Valor de X=%d",*x);
@@ -32,7 +34,7 @@ return 0;
 }
 
 
-int menu(int *x){
+int menu(int *x, void *pBuffer, int *n){
 
     printf("Diga a opcao desejada: \n");
     printf("\n0 para sair\n1 Adicionar\n2 Retirar\n3 Listar\n4 Buscar\n-------------------------------------\n");
@@ -43,7 +45,7 @@ int menu(int *x){
             return 0;
             break;
         case 1:
-            adiciona();
+            adiciona(pBuffer, n);
             break;
         case 2:
             retira();
@@ -63,4 +65,17 @@ int menu(int *x){
 void retira(){}
 void lista(){}
 void busca(){}
-void adiciona(){}
+
+void adiciona(void *pBuffer, int *n){
+    *n += 1;
+    pBuffer =(struct tipo*) realloc(pBuffer, 2*sizeof(int) + (*n*sizeof(struct tipo)));
+    char *pPessoa = pBuffer;
+    int *pPerson;
+
+    pPessoa = (2*sizeof(int)) + (*n*sizeof(struct tipo));
+    printf("Diga o nome: ");
+    scanf("%s", &*pPessoa);
+    printf("Nome: %c" *pPessoa);
+    
+    }
+
