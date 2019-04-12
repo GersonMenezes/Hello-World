@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct tipo{
 char nome[30];
@@ -7,22 +8,26 @@ int idade;
 int cell;
 };
 
-int menu(int *x, void *pBuffer, int *n);
+void *pBuffer;
+int *x, *n;
+int menu();
 void retira();
 void lista();
 void busca();
-void adiciona(void *pBuffer, int *n);
+void adiciona();
 
 int main(){
 
-void *pBuffer = (struct tipo*) malloc(2*sizeof(int));
+pBuffer = (void*) malloc(2*sizeof(int));
     if(pBuffer != NULL) printf("Alocado com sucesso\n");
-int *x = pBuffer, *n = pBuffer;
+x = pBuffer;
+n = pBuffer;
 n += sizeof(int);
 *n = 0;
+*x = 1;
 
     while(*x != 0){
-    *x = menu(x, pBuffer, n);
+    *x = menu();
     }
 
 printf("Valor de X=%d",*x);
@@ -34,7 +39,7 @@ return 0;
 }
 
 
-int menu(int *x, void *pBuffer, int *n){
+int menu(){
 
     printf("Diga a opcao desejada: \n");
     printf("\n0 para sair\n1 Adicionar\n2 Retirar\n3 Listar\n4 Buscar\n-------------------------------------\n");
@@ -45,7 +50,7 @@ int menu(int *x, void *pBuffer, int *n){
             return 0;
             break;
         case 1:
-            adiciona(pBuffer, n);
+            adiciona();
             break;
         case 2:
             retira();
@@ -60,22 +65,23 @@ int menu(int *x, void *pBuffer, int *n){
             printf("Nenhuma alternativa correta");
             return 1;
         }
+    getchar();
 }
 
 void retira(){}
 void lista(){}
 void busca(){}
 
-void adiciona(void *pBuffer, int *n){
+void adiciona(){
     *n += 1;
-    pBuffer =(struct tipo*) realloc(pBuffer, 2*sizeof(int) + (*n*sizeof(struct tipo)));
-    char *pPessoa = pBuffer;
+    pBuffer =(void*) realloc(pBuffer, 2*sizeof(int) + (*n*sizeof(struct tipo)));
+    struct tipo *pPessoa;
+    pPessoa = (struct tipo*) pBuffer;
     int *pPerson;
 
-    pPessoa = (2*sizeof(int)) + (*n*sizeof(struct tipo));
+    pPessoa += (2*sizeof(int));
     printf("Diga o nome: ");
-    scanf("%s", &*pPessoa);
-    printf("Nome: %c" *pPessoa);
-    
+    scanf("%s", pPessoa->nome);
+    printf("Nome: %s", *pPessoa);
     }
 
