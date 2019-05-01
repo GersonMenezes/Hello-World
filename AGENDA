@@ -95,8 +95,10 @@ void lista(){
             printf("Ninguem na lista\n");
         }
     else{
-        for(*cont=0; *cont<*n; *cont++){
-
+            pPessoa =(struct tipo*) cont + 1;
+        for(*cont=0; *cont<(*n); (*cont)++){
+            
+            printf("*n = %d, *cont = %d", *n, *cont);
             printf("\n\nNome: %s\n", pPessoa->nome);
             printf("Idade:%d\n", pPessoa->idade);
             printf("Telefone: %d \n\n", pPessoa->cell);
@@ -124,3 +126,4 @@ void adiciona(){
         printf("Diga o TELEFONE: ");
         scanf("%d", &pPessoa->cell);
 }
+
