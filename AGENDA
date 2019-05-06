@@ -32,16 +32,13 @@ int main(){
     *n = 1;
     *x = 1;
 
-    printf("%d\n\n", *n);
-
     while(*x != 0){
     *x = menu();
     }
 
-    printf("Valor de X=%d\nN=%d",*x, *n);
     free(pBuffer);
-        if(pBuffer != NULL) {
-                printf("\n\nMemoria nao limpada com sucesso");}
+        if(pBuffer == NULL) {
+                printf("\n\nMemoria limpa com sucesso");}
 
 return 0;
 }
@@ -49,15 +46,11 @@ void appoint(){
     x = pBuffer;
     n = x+1;
     cont = n+1;
-    printf("Oh Yes!");
-    pPessoa =(struct tipo*) cont + 1;
-    pPessoa = pPessoa + sizeof(struct tipo);
-    printf("Vamos la: %s", pPessoa->nome);
 }
 
 int menu(){
 
-    printf("Diga a opcao desejada: ");
+    printf("\nDiga a opcao desejada: ");
     printf("\n0 para sair\n1 Adicionar\n2 Retirar\n3 Listar\n4 Buscar\n");
     scanf("%d", &*x);
 
@@ -95,36 +88,34 @@ void retira(){
     if(*n == 1) printf("Nao ha nada para retirar");
 
     else{
-        printf("Diga o nome que desejas tirar");
+        printf("Diga o nome que desejas retirar: ");
         scanf("%s", auxname->nome);
 
-        for(*cont = 0; *cont < (*n); *cont+1){
+        for(*cont = 0; *cont < (*n); ){
             if((strcmp(auxname->nome, pPessoa->nome)) == 0){
-                printf("Ai am here-----\n");
-                printf("%s\n", auxname->nome);
-                printf("%s\n", pPessoa->nome);
+            
                 strcpy(pPessoa->nome, paux->nome);
                 pPessoa->idade = paux->idade;
                 pPessoa->cell = paux->cell;
-                printf("2° %s\n", pPessoa->nome);
                 *cont = *n;
                 *n = *n - 1;
-                pBuffer =  realloc(pBuffer, sizeof(struct tam) + (sizeof(struct tipo)*(*n)));
-               // if(pBuffer != NULL){ printf("Sucess Reallocation\n");}
-               // if(pBuffer == NULL){ printf("Do not allocated");}
+                pBuffer =(void*)  realloc(pBuffer, sizeof(struct tam) + (sizeof(struct tipo)*(*n)));
+                if(pBuffer != NULL){ printf("Sucess Reallocation\n");}
+                if(pBuffer == NULL){ printf("Do not allocated");}
 
                 appoint();
             }
-            else if ((strcmp(auxname->nome, pPessoa->nome)) != 0){
+            else if (*cont < *n){
                 pPessoa = pPessoa + sizeof(struct tipo);
-                printf("daqui: %d  ", *cont);
+                *cont= *cont+1;
+            	if(*cont == *n) printf("\n\n----Nenhum nome correspondente----\n\n");
             }
-        } //for
+        } 
     }
 }
 void lista(){
-    if(*n==0){
-            printf("Ninguem na lista\n");
+    if(*n==1){
+            printf("\nNinguem na lista\n\n");
         }
     else{
             pPessoa =(struct tipo*) cont + 1;
@@ -133,32 +124,54 @@ void lista(){
 
         for(*cont=1; *cont<(*n); (*cont)++){
 
-           // printf("*n = %d, *cont = %d", *n, *cont);
             printf("\n\nNome: %s\n", pPessoa->nome);
-           // printf("Idade:%d\n", pPessoa->idade);
-           // printf("Telefone: %d \n\n", pPessoa->cell);
+            printf("Idade: %d\n", pPessoa->idade);
+            printf("Telefone: %d \n\n", pPessoa->cell);
             pPessoa = pPessoa + sizeof(struct tipo);
         }
     }
 }
-void busca(){}
+void busca(){
+	struct tipo *auxname =(struct tipo*) cont + 1;
+	pPessoa = (struct tipo*) cont + 1;
+    pPessoa = pPessoa + sizeof(struct tipo);
+    
+    
+        printf("Diga a pessoa que desejas buscar: ");
+        scanf("%s", auxname->nome);
+
+        for(*cont = 0; *cont < (*n); ){
+            if((strcmp(auxname->nome, pPessoa->nome)) == 0){
+                printf("-----Achamos a pessoa a qual procuras, aqui estao seus dados: -----\n");
+                printf("Nome: %s\n", pPessoa->nome);
+                printf("Idade: %d\n", pPessoa->idade);
+                printf("Telefone: %d\n", pPessoa->cell);
+                *cont = *n;
+                
+            }
+            else if (*cont < *n){
+                pPessoa = pPessoa + sizeof(struct tipo);
+                *cont= *cont+1;
+            	if(*cont == *n) printf("\n\n----Nenhum nome correspondente----\n\n");
+            }
+        } 
+}
 
 void adiciona(){
+    
     *n = *n + 1;
-    printf("\nN = %d\n", *n);
-    pBuffer =  realloc(pBuffer, sizeof(struct tam) + (sizeof(struct tipo)*(*n)));
+    pBuffer =(void*)  realloc(pBuffer, sizeof(struct tam) + (sizeof(struct tipo)*(*n)));
         if(pBuffer != NULL) printf("Sucess Reallocation\n");
         if(pBuffer == NULL) printf("Do not allocated");
 
     appoint();
-    printf("\nN again = %d\n", *n);
-        pPessoa =(struct tipo*) cont + 1;
-        pPessoa = pPessoa + (sizeof(struct tipo)*(*n-1));
-        printf("Diga o nome: ");
-        scanf("%s", pPessoa->nome);
-        /*printf("Diga a IDADE: ");
-        scanf("%d", &pPessoa->idade);
-        printf("Diga o TELEFONE: ");
-        scanf("%d", &pPessoa->cell);*/
+    
+    pPessoa =(struct tipo*) cont + 1;
+    pPessoa = pPessoa + (sizeof(struct tipo)*(*n-1));
+    printf("Diga o nome: ");
+    scanf("%s", pPessoa->nome);
+    printf("Diga a IDADE: ");
+    scanf("%d", &pPessoa->idade);
+    printf("Diga o TELEFONE: ");
+    scanf("%d", &pPessoa->cell);
 }
-
