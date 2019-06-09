@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct name{
 char nome[32];
@@ -19,47 +20,101 @@ void reset(struct pilha *pilha1){
 
 }
 
-int push(struct pilha *pilha1, struct name *item){
+void  push(struct pilha *pilha1){
 
     if(pilha1->topo == pilha1->limite){
-    printf("Pilha já está cheia...\n\n");
-    return 0;
+        printf("Pilha está cheia...\n\n");
     }
-    else
-    pilha1->pessoas[pilha1->topo] = *item;
-    pilha1->topo ++;
-    return 1;
+    else {
+        printf("Diga o nome da pessoa: ");
+        scanf("%s", pilha1->pessoas[pilha1->topo].nome);
+        printf("Diga seu numero: ");
+        scanf("%d", &pilha1->pessoas[pilha1->topo].cell);
+        pilha1->topo ++;
+    }
     }
     
 void pop(struct pilha *pilha1){
     
     if(pilha1->topo == 0){
-        printf("pilha ja esta vazia"){
-        }
+        printf("pilha ja esta vazia");
     }
     else
-    pilha1->topo--;
+        pilha1->topo--;
 }
 
-int menu(){
-    int y;
-    printf("Diga a opcao desejada: \n0 para sair\n1 para acrescentar\n2 para retirar\n3 para listar");
-    scanf("%d", &y);
-    
-    switch y {
-        case 0:
-        return 0;
-        case 1:
-            push();
-            break
-    
-    
+void popOne(struct pilha *pilha1){
+  struct pilha aux1;
+  struct name aux;
+  int c = 0, i = 0;
+  printf("Tell the name one: ");
+  scanf("%s", aux.nome);
+    for(; c < 5; c++){
+      if(aux.nome == pilha1->pessoas[pilha1->topo-1].nome){
+        pilha1->topo--;
+        c = 5;
+      }
+      else{
+        aux1.pessoas[i] = pilha1->pessoas[pilha1->topo-1];
+        pilha1->topo--;
+        i++;
+      }
+    }
+    for(;i>0; i--){
+      pilha1->pessoas[pilha1->topo] = aux1.pessoas[i-1];
+      pilha1->topo++;
     }
 }
+
+void list(struct pilha *pilha1){
+  int tmp = pilha1->topo - 1;
+
+    if(pilha1->topo == 0){
+      printf("Empty list...");
+    }
+    else 
+      for(;tmp >= 0;){
+        printf("Nome: %s\nNumero: %d\n\n", pilha1->pessoas[tmp].nome, pilha1->pessoas[tmp].cell);
+        tmp--;
+        }
+  printf("\n");
+}
+//void clear();
+
+int menu(struct pilha *pilha1, struct name *item){
+    int y;
+    printf("Diga a opcao desejada: \n0 para sair:\n1 para acrescentar:\n2 para retirar:\n3 para listar:\n4 para retirar uma pessoa:\n");
+    scanf("%d", &y);
+    
+    switch (y) {
+        case 0:
+          return 0;
+          break;
+        case 1:
+          push(pilha1);
+          break;
+        case 2:
+          pop(pilha1);
+          break;
+        case 3:
+          list(pilha1);
+          break;
+        case 4: 
+          popOne(pilha1);
+          break;
+        /*case5:
+          clear();
+          break;*/
+        default:
+          printf("Nenhuma alternativa correta");
+    }
+    getchar();
+    return 1;
+  }
 
 int main()
 {
-    int x, flag = 1;
+    int x = 1;
     struct pilha *pilha1;
     struct name *item;
 
@@ -69,17 +124,8 @@ int main()
     reset(pilha1);
 
     while(x!=0){
-    x = menu();
+    x = menu(pilha1, item);
     }
-    for(x=0; x<6; x++){
-    strcpy(item->nome, "joao");
-    item->cell = 77 + x;
-    flag = push(pilha1, item);
-
-        if (flag = 1){
-        printf("%d\n", (pilha1->pessoas[x].cell));
-        printf("%s\n", (pilha1->pessoas[x].nome));
-        }
-    }
+    
 return 0;
 }
