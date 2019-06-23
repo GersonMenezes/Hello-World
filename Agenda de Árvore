@@ -12,10 +12,12 @@ struct node{
   struct node *left, *right;
   };
     
-int menu(struct node* *treehead);
+int menu(struct node **treehead);
 void search(data *ficha,struct node* p);
-void push(data new, struct node* *p);
-void pop(data guy, struct node* *p);
+void push(data new, struct node **p);
+void pop(data guy, struct node **p);
+void AntecessorR(struct node *q, struct node **r);
+void AntecessorL(struct node *q, struct node **r);
 //void empty(node* *p);
 
 int main(){
@@ -73,6 +75,89 @@ int main(){
 	return 0;
 }*/
 	
+void push(data new, struct node **p){
+
+  if (*p == NULL){
+    *p = (struct node*) malloc(sizeof(struct node));
+    (*p)->inf = new;
+    (*p)->right = NULL; (*p)->left = NULL;
+     if(*p != NULL){
+        	printf("Record added with sucess...\n\n");
+		}
+	return;
+    }
+  if (new.chave < (*p)->inf.chave){
+    	push(new, &(*p)->left);
+    	return;
+    }
+  if (new.chave > (*p)->inf.chave){
+    	push(new, &(*p)->right);
+    	return;
+    }
+  else
+      printf("This person is already in the database\n\n");
+}
+
+void pop(data guy, struct node **p){
+
+    struct node *aux;
+    if(*p == NULL){
+    printf("Empty list");
+    return;
+  }
+    if(guy.chave < (*p)->inf.chave){
+      pop(guy, &(*p)->left);
+      return;
+  }
+    if(guy.chave > (*p)->inf.chave){
+      pop(guy, &(*p)->right);
+      return;
+  }								//agora foi achado o node a se apagado
+    if((*p)->right == NULL){   // Se o lado direito for NULL, basta indexar o que tem à esquerda para o ponteiro que aponta para o nodo a ser apagado...
+      aux = *p;
+      *p = (*p)->left;
+      free(aux);
+      return;
+   }
+	if ((*p)->left != NULL){  // Mas se o nodo da direita não é NULL então pega-se o mais a direita do da esquerda a ser apagado...
+      AntecessorL(*p, &(*p)->left);
+      return;
+   }
+    if ((*p)->left == NULL){  // Se o lado esquerdo for NULL, basta indexar o que tem à direita para o ponteiro que aponta para nodo a ser apagado
+    	aux = *p;
+    	*p = (*p)->right;
+    	free(aux);
+    	return;	
+   }
+   if ((*p)->right != NULL){  // Mas se o nodo da esquerda não é NULL então pega-se o mais a esquerda do da direita a ser apagado...
+      AntecessorR(*p, &(*p)->right);
+      return;
+	}
+ }
+ 
+ void AntecessorL(struct node *q, struct node **r) {
+	struct node *aux;
+	if ((*r)->right != NULL) {
+		Antecessor(q, &(*r)->right);
+		return;	
+	}	
+	q->inf = (*r)->inf;
+	aux = *r;
+	*r = (*r)->left;
+	free(aux);
+}
+ void AntecessorR(struct node* q, struct node **r) {
+	struct node *aux;
+	if ((*r)->left != NULL) {
+		Antecessor(q, &(*r)->left);
+		return;	
+	}	
+	q->inf = (*r)->inf;
+	aux = *r;
+	*r = (*r)->right;
+	free(aux);
+}
+ 
 void search(data *ficha, struct node* p){
 
   if(p == NULL){
@@ -87,48 +172,6 @@ void search(data *ficha, struct node* p){
     search(ficha, p->left);
     return;
   }
-  else
-    *ficha = p->inf;
+  else{
+    *ficha = p->inf;}
 }
-
-void push(data new, struct node* *p){
-
-  if (*p == NULL){
-    *p = (struct node*) malloc(sizeof(struct node));
-    (*p)->inf = new;
-    (*p)->right = NULL; (*p)->left = NULL;
-    }
-  if (new.chave < (*p)->inf.chave){
-    	push(new, &(*p)->left);
-    return;
-    }
-  if (new.chave > (*p)->inf.chave){
-    	push(new, &(*p)->right);
-      return;
-    }
-  else
-      printf("This person already is in the data base");
-}
-
-void pop(data guy, struct node* *p){
-
-  struct node *aux;
-  if(*p == NULL){
-    printf("Empty list");
-    return;
-  }
-  if(guy.chave < (*p)->inf.chave){
-      pop(guy, &(*p)->left);
-      return;
-  }
-  if(guy.chave > (*p)->inf.chave){
-      pop(guy, &(*p)->right);
-      return;
-  }
-  if((*p)->right == NULL){
-      aux = *p;
-      *p = (*p)->left;
-      free(aux);
-      return;
-   }
- }  
