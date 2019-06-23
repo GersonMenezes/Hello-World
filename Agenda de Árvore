@@ -1,4 +1,86 @@
-void insere(data new, pointer *p){
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct REGISTRO{
+  int chave;
+  char nome[24];
+  }data;
+  
+typedef struct no{
+  data inf;
+  pointer left, right;
+  }no;
+    
+typedef struct no *pointer;
+int menu(pointer treehead);
+void search(data *ficha, pointer p);
+void push(data new, pointer *p);
+void pop(data guy, pointer *p);
+
+int main(){
+
+  pointer treehead =(pointer) malloc(sizeof(no));
+  
+   while(x!=0){
+      x = menu(&treehead);
+   }
+ return 0;
+ }
+ 
+ int menu(pointer *treehead){
+  int y;
+  data chosen;
+  printf("Diga a opcao desejada:\n0 para sair\n1 para adicionar\n2 para retirar\n3para listar\n4 para buscar\n5 para limpar\n\n")
+  scanf("%d", &y);
+    
+    swicth (y){
+      case 0:
+        return 0;
+        break;
+      case 1:
+        printf("Tell the number person to be add: \n");
+        scanf("%d", &(chosen.chave));
+        push(&(chosen, *treehead));
+        break;
+      case 2:
+        printf("Tell the name to remove: \n");
+        scanf("%d", &(chosen.chave));
+        pop(chosen, &(*treehead));
+        break;
+      case 3:
+        list();
+        break;
+      case 4:
+        printf("Tell the number people to remove: \n"); 
+        scanf("%d", &(chosen.chave));
+        search(&chosen, *treehead);
+        break;
+      case 5:
+        clear();
+        break;
+      default:
+          printf("Do not exist this option");
+      }
+      return 1;
+ }
+
+void search(data *ficha, pointer p){
+
+  if(empty){
+    printf("No data to show\n");
+    return;
+  }
+  if(ficha->chave > p->inf.chave){
+    search(ficha, treehead->right);
+  }
+  if(ficha->chave < p->inf.chave){
+    search(ficha, p->left);
+  }
+  else
+    *ficha = p->inf;
+}
+
+void push(data new, pointer *p){
 
   if (empty(p)){
     *p = (pointer) malloc(sizeof(no));
