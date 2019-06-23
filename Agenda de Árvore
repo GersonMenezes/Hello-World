@@ -1,0 +1,42 @@
+void insere(data new, pointer *p){
+
+  if (empty(p)){
+    *p = (pointer) malloc(sizeof(no));
+    (*p)->inf = new;
+    (*p)->right = NULL; (*p)->left = NULL;
+    }
+  if (new.chave < (*p)->inf.chave){
+    insere(new, &(*p)->left);
+    return;
+    }
+  if (new.chave > (*p)->inf.chave){
+    insere (new, &(*p)->right);
+      return;
+    }
+  else
+      printf("This person already is in the data base");
+}
+
+void pop(data guy, pointer *p){
+
+  ponter aux;
+  if(empty()){
+    printf("Empty list");
+    return;
+  }
+  if(guy.chave < (*p)->chave){
+      pop(guy, &(*p)->left);
+      return;
+  }
+  if(guy.chave > (*p)->chave){
+      pop(guy, &(*p)->right)){
+      return;
+  }
+  if((*p)->right == NULL){
+      aux = *p;
+      *p = (*p)->left;
+      free(aux);
+      return;
+   }
+ }
+    
