@@ -11,13 +11,13 @@ struct node{
   data inf;
   struct node *left, *right;
   };
-    
+
 int menu(struct node **treehead);
 void search(data *ficha,struct node* p);
 void push(data new, struct node **p);
 void pop(data guy, struct node **p);
-void AntecessorR(struct node *q, struct node **r);
 void AntecessorL(struct node *q, struct node **r);
+void print(struct node *p);
 //void empty(node* *p);
 
 int main(){
@@ -25,19 +25,19 @@ int main(){
 	int x = 1;
     struct node *treehead =(struct node*) malloc(sizeof(struct node));
     treehead = NULL;
-   
+
     while(x!=0){
       x = menu(&treehead);
    }
  return 0;
  }
- 
+
  int menu(struct node **treehead){
   int y;
   data chosen;
   printf("Diga a opcao desejada:\n\n0 para sair\n1 para adicionar\n2 para retirar\n3 para listar\n4 para buscar\n5 para limpar\n\n");
   scanf("%d", &y);
-    
+
     switch (y){
       case 0:
         return 0;
@@ -52,11 +52,11 @@ int main(){
         scanf("%d", &(chosen.chave));
         pop(chosen, &(*treehead));
         break;
-     /* case 3:
-        list();
-        break;*/
+        case 3:
+        print(*treehead);
+        break;
       case 4:
-        printf("Tell the number people to remove: \n"); 
+        printf("Tell the number people to remove: \n");
         scanf("%d", &(chosen.chave));
         search(&chosen, *treehead);
         break;
@@ -74,7 +74,7 @@ int main(){
 	else
 	return 0;
 }*/
-	
+
 void push(data new, struct node **p){
 
   if (*p == NULL){
@@ -127,37 +127,23 @@ void pop(data guy, struct node **p){
     	aux = *p;
     	*p = (*p)->right;
     	free(aux);
-    	return;	
+    	return;
    }
-   if ((*p)->right != NULL){  // Mas se o nodo da esquerda não é NULL então pega-se o mais a esquerda do da direita a ser apagado...
-      AntecessorR(*p, &(*p)->right);
-      return;
-	}
+
  }
- 
+
  void AntecessorL(struct node *q, struct node **r) {
 	struct node *aux;
 	if ((*r)->right != NULL) {
-		Antecessor(q, &(*r)->right);
-		return;	
-	}	
+		AntecessorL(q, &(*r)->right);
+		return;
+	}
 	q->inf = (*r)->inf;
 	aux = *r;
 	*r = (*r)->left;
 	free(aux);
 }
- void AntecessorR(struct node* q, struct node **r) {
-	struct node *aux;
-	if ((*r)->left != NULL) {
-		Antecessor(q, &(*r)->left);
-		return;	
-	}	
-	q->inf = (*r)->inf;
-	aux = *r;
-	*r = (*r)->right;
-	free(aux);
-}
- 
+
 void search(data *ficha, struct node* p){
 
   if(p == NULL){
@@ -174,4 +160,12 @@ void search(data *ficha, struct node* p){
   }
   else{
     *ficha = p->inf;}
+}
+void print(struct node *p){
+	if(p!=NULL){
+		printf("---------------------\n");
+		printf("Nome: %d\n",p->inf.chave);
+		print(p->left);
+		print(p->right);
+	}
 }
