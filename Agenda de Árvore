@@ -169,3 +169,11 @@ void print(struct node *p){
 		print(p->right);
 	}
 }
+
+void limpaArvore(apontador arvore){
+    if(arvore != NULL){
+        limpaArvore(arvore->dir);
+        limpaArvore(arvore->esq);
+    }
+    free(arvore);
+}
