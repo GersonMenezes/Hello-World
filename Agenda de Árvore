@@ -18,7 +18,7 @@ void push(data new, struct node **p);
 void pop(data guy, struct node **p);
 void AntecessorL(struct node *q, struct node **r);
 void print(struct node *p);
-//void empty(node* *p);
+void clear(struct node **p);
 
 int main(){
 
@@ -31,7 +31,6 @@ int main(){
    }
  return 0;
  }
-
  int menu(struct node **treehead){
   int y;
   data chosen;
@@ -52,7 +51,7 @@ int main(){
         scanf("%d", &(chosen.chave));
         pop(chosen, &(*treehead));
         break;
-        case 3:
+      case 3:
         print(*treehead);
         break;
       case 4:
@@ -60,21 +59,14 @@ int main(){
         scanf("%d", &(chosen.chave));
         search(&chosen, *treehead);
         break;
-      /*case 5:
-        clear();
-        break;*/
+      case 5:
+        clear(&(*treehead));
+        break;
       default:
           printf("Do not exist this option");
       }
       return 1;
  }
-/*int empty(pointer *p){
-	if (*p == NULL)
-	return 1;
-	else
-	return 0;
-}*/
-
 void push(data new, struct node **p){
 
   if (*p == NULL){
@@ -97,7 +89,6 @@ void push(data new, struct node **p){
   else
       printf("This person is already in the database\n\n");
 }
-
 void pop(data guy, struct node **p){
 
     struct node *aux;
@@ -123,19 +114,17 @@ void pop(data guy, struct node **p){
       AntecessorL(*p, &(*p)->left);
       return;
    }
-    if ((*p)->left == NULL){  // Se o lado esquerdo for NULL, basta indexar o que tem à direita para o ponteiro que aponta para nodo a ser apagado
+    if ((*p)->left == NULL){  // Se o lado esquerdo for NULL, basta indexar o que tem à direita para o ponteiro do nodo a se apagado
     	aux = *p;
     	*p = (*p)->right;
     	free(aux);
     	return;
    }
-
  }
-
  void AntecessorL(struct node *q, struct node **r) {
 	struct node *aux;
 	if ((*r)->right != NULL) {
-		AntecessorL(q, &(*r)->right);
+		AntecessorL(q, &(*r)->right); // O que houver mais a direita do nodo a esquerda do que vai ser apagado vai substituir o nodo a se apagado....
 		return;
 	}
 	q->inf = (*r)->inf;
@@ -169,11 +158,10 @@ void print(struct node *p){
 		print(p->right);
 	}
 }
-
-void limpaArvore(apontador arvore){
-    if(arvore != NULL){
-        limpaArvore(arvore->dir);
-        limpaArvore(arvore->esq);
+void clear(struct node **p){
+    if(*p != NULL){
+        clear(&(*p)->right);
+        clear(&(*p)->left);
     }
-    free(arvore);
-}
+    free(*p);
+}   
