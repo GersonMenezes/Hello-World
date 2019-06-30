@@ -1,0 +1,256 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Data{
+  int chave;
+  char nome[24];
+  }data;
+
+struct node{
+  data inf;
+  struct node *left, *right;
+  };
+
+int menu(struct node **treehead);
+void search(data *ficha,struct node* p);
+int push(data new, struct node **p);
+void pop(data guy, struct node **p);
+void AntecessorL(struct node *q, struct node **r);
+void print(struct node *p);
+void clear(struct node **p);
+int FB(struct node *treehead);
+int height(struct node *);
+void leftRotation(struct node **p);
+void rightRotation(struct node **p);
+int balancing(struct node **p);
+int rightBalance(struct node **p);
+int leftBalance(struct node **p);
+
+int main(){
+
+	int x = 1;
+    struct node *treehead =(struct node*) malloc(sizeof(struct node));
+    treehead = NULL;
+
+    while(x!=0){
+      x = menu(&treehead);
+   }
+ return 0;
+ }
+ int menu(struct node **treehead){
+  int y, balanced;
+  data chosen;
+  printf("Diga a opcao desejada:\n\n0 para sair\n1 para adicionar\n2 para retirar\n3 para listar\n4 para buscar\n5 para limpar\n\n");
+  scanf("%d", &y);
+
+    switch (y){
+      case 0:
+        return 0;
+        break;
+      case 1:
+        printf("Tell the number person to be add: \n");
+        scanf("%d", &(chosen.chave));
+        balanced = push(chosen, &(*treehead));
+        if(balanced)
+          printf("Did not need to balance");
+        else
+          printf("Did not need to balance");
+        break;
+      case 2:
+        printf("Tell the name to remove: \n");
+        scanf("%d", &(chosen.chave));
+        pop(chosen, &(*treehead));
+        break;
+      case 3:
+        print(*treehead);
+        break;
+      case 4:
+        printf("Tell the number people to remove: \n");
+        scanf("%d", &(chosen.chave));
+        search(&chosen, *treehead);
+        break;
+      case 5:
+        clear(&(*treehead));
+        break;
+      default:
+          printf("Do not exist this option");
+      }
+      return 1;
+ }
+int push(data new, struct node **p){
+
+  if (*p == NULL){
+    *p = (struct node*) malloc(sizeof(struct node));
+    (*p)->inf = new;
+    (*p)->right = NULL; (*p)->left = NULL;
+     if(*p != NULL){
+        	printf("Record added with sucess...\n\n");
+		}
+	return 1;
+    }
+  if (new.chave < (*p)->inf.chave){
+    if(push(new, &(*p)->left)){
+        if(balancing(&(*p)))
+          return 0;
+        else
+          return 1;
+      }
+    }
+  if (new.chave > (*p)->inf.chave){
+    if(push(new, &(*p)->right)){
+        if(balancing(&(*p)))
+          return 0;
+        else
+          return 1;
+      }
+    }
+  else{
+      printf("This person is already in the database\n\n");
+      return 0;
+  }
+}
+void pop(data guy, struct node **p){
+
+    struct node *aux;
+    if(*p == NULL){
+    printf("Empty list");
+    return;
+  }
+    if(guy.chave < (*p)->inf.chave){
+      pop(guy, &(*p)->left);
+      return;
+  }
+    if(guy.chave > (*p)->inf.chave){
+      pop(guy, &(*p)->right);
+      return;
+  }								//agora foi achado o node a se apagado
+    if((*p)->right == NULL){   // Se o lado direito for NULL, basta indexar o que tem à esquerda para o ponteiro que aponta para o nodo a ser apagado...
+      aux = *p;
+      *p = (*p)->left;
+      free(aux);
+      return;
+   }
+	if ((*p)->left != NULL){  // Mas se o nodo da direita não é NULL então pega-se o mais a direita do da esquerda a ser apagado...
+      AntecessorL(*p, &(*p)->left);
+      return;
+   }
+    if ((*p)->left == NULL){  // Se o lado esquerdo for NULL, basta indexar o que tem à direita para o ponteiro do nodo a se apagado
+    	aux = *p;
+    	*p = (*p)->right;
+    	free(aux);
+    	return;
+   }
+ }
+ void AntecessorL(struct node *q, struct node **r) {
+	struct node *aux;
+	if ((*r)->right != NULL) {
+		AntecessorL(q, &(*r)->right); // O que houver mais a direita do nodo a esquerda do que vai ser apagado vai substituir o nodo a se apagado....
+		return;
+	}
+	q->inf = (*r)->inf;
+	aux = *r;
+	*r = (*r)->left;
+	free(aux);
+}
+
+void search(data *ficha, struct node* p){
+
+  if(p == NULL){
+    printf("No data to show\n");
+    return;
+  }
+  if(ficha->chave > p->inf.chave){
+    search(ficha, p->right);
+    return;
+  }
+  if(ficha->chave < p->inf.chave){
+    search(ficha, p->left);
+    return;
+  }
+  else{
+    *ficha = p->inf;}
+}
+void print(struct node *p){
+	if(p!=NULL){
+		printf("---------------------\n");
+		printf("Nome: %d\n",p->inf.chave);
+		print(p->left);
+		print(p->right);
+	}
+}
+void clear(struct node **p){
+    if(*p != NULL){
+        clear(&(*p)->right);
+        clear(&(*p)->left);
+    }
+    free(*p);
+}   
+int FB(struct node *p){
+  if(p==NULL)
+    return 0;
+  else
+    return height(p->left) - height(p->right);
+}
+int height(struct node *p){
+  int iLeft, iRight;
+  if (p==NULL)
+    return 0;
+  iLeft = height(p->left);
+  iRight = height(p->right);
+  
+  if(iLeft > iRight)
+    return iLeft + 1;
+  else
+    return iRight + 1;
+}
+void leftRotation(struct node **p){
+  struct node *aux;
+  
+  aux = (*p)->right;
+  (*p)->right = aux->left;
+  aux->left = *p;
+  *p = aux;
+}
+void rightRotation(struct node **p){
+  struct node *aux;
+  
+  aux = (*p)->left;
+  (*p)->left = aux->right;
+  aux->right = *p;
+  *p = aux;
+}
+int leftBalance(struct node **p){
+  int fbe = FB((*p)->left);
+  if(fbe>0){
+    rightRotation(&(*p));
+    return 1;}
+  else if (fbe<0){
+    leftRotation(&(*p)->left);
+    rightRotation(&(*p));
+    return 1;}
+  else
+    return 0;
+}
+int rightBalance(struct node **p){
+  int fbe = FB((*p)->right);
+  if(fbe<0){
+    leftRotation(&(*p));
+    return 1;}
+  else if (fbe>0){
+    rightRotation(&(*p)->left);
+    leftRotation(&(*p));
+    return 1;}
+  else
+    return 0;
+}
+int balancing(struct node **p){
+  int x = FB(*p);
+  if(x>1)
+    return leftBalance(&(*p));
+  else if(x<1)
+    return rightBalance(&(*p));
+  else
+    return 0;
+ }
+      
