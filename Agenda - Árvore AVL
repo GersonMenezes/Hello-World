@@ -53,9 +53,9 @@ int main(){
         scanf("%d", &(chosen.chave));
         balanced = push(chosen, &(*treehead));
         if(balanced)
-          printf("Did not need to balance");
+          printf("Did not need to balance\n");
         else
-          printf("Did not need to balance");
+          printf("Did not need to balance\n");
         break;
       case 2:
         printf("Tell the name to remove: \n");
@@ -80,16 +80,21 @@ int main(){
  }
 int push(data new, struct node **p){
 
-  if (*p == NULL){
-    *p = (struct node*) malloc(sizeof(struct node));
-    (*p)->inf = new;
-    (*p)->right = NULL; (*p)->left = NULL;
+   if (*p == NULL){
+	    *p = (struct node*) malloc(sizeof(struct node));
+	    (*p)->inf = new;
+	    (*p)->right = NULL; (*p)->left = NULL;
      if(*p != NULL){
         	printf("Record added with sucess...\n\n");
 		}
 	return 1;
     }
-  if (new.chave < (*p)->inf.chave){
+	if (new.chave == (*p)->inf.chave){
+	
+		printf("This person is already in the database\n");
+		return 0;
+		}
+   if (new.chave < (*p)->inf.chave){
     if(push(new, &(*p)->left)){
         if(balancing(&(*p)))
           return 0;
@@ -97,18 +102,15 @@ int push(data new, struct node **p){
           return 1;
       }
     }
-  if (new.chave > (*p)->inf.chave){
-    if(push(new, &(*p)->right)){
+   if (new.chave > (*p)->inf.chave){
+     if(push(new, &(*p)->right)){
         if(balancing(&(*p)))
           return 0;
         else
           return 1;
       }
     }
-  else{
-      printf("This person is already in the database\n\n");
-      return 0;
-  }
+  
 }
 void pop(data guy, struct node **p){
 
@@ -131,16 +133,18 @@ void pop(data guy, struct node **p){
       free(aux);
       return;
    }
-	if ((*p)->left != NULL){  // Mas se o nodo da direita não é NULL então pega-se o mais a direita do da esquerda a ser apagado...
+	else if ((*p)->left != NULL){  // Mas se o nodo da direita não é NULL então pega-se o mais a direita do da esquerda a ser apagado...
       AntecessorL(*p, &(*p)->left);
       return;
    }
-    if ((*p)->left == NULL){  // Se o lado esquerdo for NULL, basta indexar o que tem à direita para o ponteiro do nodo a se apagado
+    else if ((*p)->left == NULL){  // Se o lado esquerdo for NULL, basta indexar o que tem à direita para o ponteiro do nodo a se apagado
     	aux = *p;
     	*p = (*p)->right;
     	free(aux);
     	return;
    }
+   if(balancing(&(*p)))
+   	      return ;
  }
  void AntecessorL(struct node *q, struct node **r) {
 	struct node *aux;
@@ -253,4 +257,4 @@ int balancing(struct node **p){
   else
     return 0;
  }
-      
+     
