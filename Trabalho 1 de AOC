@@ -1,0 +1,27 @@
+
+# Questão 1
+
+ori $t7, $zero, 0xD
+sll $t7, $t7, 4
+ori $t7, $t7, 0xE
+sll $t7, $t7, 4
+ori $t7, $t7, 0xC
+sll $t7, $t7, 4
+ori $t7, $t7, 0xA
+sll $t7, $t7, 4
+ori $t7, $t7, 0xD
+sll $t7, $t7, 4
+ori $t7, $t7, 0xA
+sll $t7, $t7, 4
+ori $t7, $t7, 0x7
+sll $t7, $t7, 4
+
+# Questão 2
+
+ori $t1, $zero, 0xAAAA
+sll $t1, $t1, 16
+ori $t1, $t1, 0xAAAA
+srl $t2, $t1, 1
+or $t3, $t1, $t2 # Em hexadecimal da FFFFFFFF e em binário teremos 1111...1111 32 vezes
+and $t4, $t1, $t2 # Em Hexadecimal teremos tudo 0 e em binário também
+xor $t5, $t1, $t2# Em hexadecimal teremos tudo F e em binário tudo 1 novamente
