@@ -8,11 +8,11 @@ int idade;
 int cell;
 };
 
-struct tam{
+struct tam{    // Memória reservada no Buffer para controle
 int cont, x, n;
 };
 
-int *cont, *x, *n;
+int *cont, *x, *n;      // Ponteiros que apontam para dados de controle
 struct tipo *pPessoa;
 void *pBuffer;
 int menu();
@@ -27,7 +27,7 @@ int main(){
     pBuffer = (void*) malloc(sizeof(struct tam));
         if(pBuffer != NULL) printf("Alocado com sucesso\n");
 
-    appoint();
+    appoint();   		// Aponta todos todos ponteiros para memória alocada
 
     *n = 1;
     *x = 1;
