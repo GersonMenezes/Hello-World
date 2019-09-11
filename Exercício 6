@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct{
+	char nome[23]; // fazer o teste de string para 10/10/2001
+	int cpf, idade;
+} tipo;
+
+tipo *p;
+
+void funcao1(tipo **P){
+	
+	printf("Preencha os dados: \n");
+	printf("Nome: ");
+	scanf("%s", &(p)->nome);
+	printf("Diga o CPF: ");
+	scanf("%d", &(*p).cpf);
+	printf("Diga a idade: ");
+	scanf("%d", &(*p).idade);
+}
+
+void funcao2(tipo **p){
+	printf("Os dados sao: ");
+	printf("Nome: %s", (*p)->nome);
+	printf("CPF: %d", (*p)->cpf);
+	printf("CPF: %d", (*p)->idade);
+}
+
+int main(){
+	
+	p = (tipo*) malloc(sizeof(tipo*));
+	funcao1(&p);
+	funcao2(&p);
+	
+	return 0;	
+}
