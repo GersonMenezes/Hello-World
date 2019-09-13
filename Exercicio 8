@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int *uniao(int *vet1, int n, int *vet2, int m){
+	int *vet3 = malloc(sizeof(int)*(m+n));
+	int x;
+
+	for(x=0; x<n; x++){
+		vet3[x] = vet1[x];
+	}
+	for(int i=0; i<m; i++){
+		vet3[x] = vet2[i];
+		x++;
+	}
+	return vet3;
+}
+
+int main(){
+	
+	int vet1[5] = {1,2,3,4,5};
+	int vet2[5] = {6,7,8,9,10};
+	int n = 5, m = 5;
+	int *vet3;
+
+	vet3 = uniao(vet1, n, vet2, m);
+
+	printf("Primeiro vetor: ");
+		for(int x=0; x<n; x++){
+			printf(" -%d-", vet1[x]);
+		}
+	
+	printf (" \n Segundo vetor: ");
+	
+		for(int i=0; i<m; i++){
+			printf(" -%d-", vet2[i]);
+		}
+	
+	printf(" \n Terceiro vetor: ");
+		for(int k=0; k<(m+n); k++){
+			printf(" -%d-", vet3[k]);
+		}
+	
+	free(vet3)	;
+	return 0;
+}
