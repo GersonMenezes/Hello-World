@@ -2,8 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Quando chamo uma função a variavel criada recebe o argumento, ex: int *parametro = argumento. 
+// Esse argumento nesse caso deve ser um ponteiro para inteiro. ex2: int parametro = inteiro. O argumento deve ser um inteiro.
+// E se, ex3, int **arg = &p, p nesse caso é um ponteiro para inteiro. ex4: int *arg = &p, p é um inteiro.
+
 void ler_aposta(int **aposta, int ne){
-    *aposta = (int*) malloc(sizeof(int)*ne);
+
+//se void funcao(int *aposta){, e foi enviado como argumento apenas funcao(aposta);, entao se eu fizer
+// aposta = (int*) malloc(sizeof(int)); dentro dessa funcao, a aposta da funcao vai apontar para outro lugar da memoria que não
+// a mesma da aposta do main. A "aposta" do main e da funcao são duas variaveis apontando para o mesmo lugar. 
+
+    *aposta = (int**) malloc(sizeof(int)*ne);
     int x;
     printf("Diga %d valores de 0 a 100: ", ne);
     for(x=0; x<ne; x++){
@@ -15,12 +24,12 @@ void ler_aposta(int **aposta, int ne){
         printf(" -%d- ", *(aposta[i]));
     }
 }
-void sorteia_valores(int *sorteio, int ns){
+void sorteia_valores(int **sorteio, int ns){
     int x;
-    sorteio = (int*) malloc(sizeof(int)*ns);
+    * sorteio = (int*) malloc(sizeof(int)*ns);
     srand( (unsigned)time(NULL) );
     for(x=0; x<ns; x++){
-        sorteio[x] = 1 + (rand() % 100);
+        *(sorteio[x]) = 1 + (rand() % 100);
     }
     printf("\nOs numeros sorteados foram: ");
     for(int j=0; j<ns; j++){
