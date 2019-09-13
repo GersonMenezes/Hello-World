@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void ler_aposta(int **aposta, int ne){
+    *aposta = (int*) malloc(sizeof(int)*ne);
+    int x;
+    printf("Diga %d valores de 0 a 100: ", ne);
+    for(x=0; x<ne; x++){
+        printf("Diga o valor %d: ", x+1);
+        scanf("%d", &(*(aposta[x])));
+    }
+    printf("\nOs numeros escolhidos foram: ");
+    for(int i=0; i<ne; i++){
+        printf(" -%d- ", *(aposta[i]));
+    }
+}
+void sorteia_valores(int *sorteio, int ns){
+    int x;
+    sorteio = (int*) malloc(sizeof(int)*ns);
+    srand( (unsigned)time(NULL) );
+    for(x=0; x<ns; x++){
+        sorteio[x] = 1 + (rand() % 100);
+    }
+    printf("\nOs numeros sorteados foram: ");
+    for(int j=0; j<ns; j++){
+        printf(" -%d- ", sorteio[j]);
+    }
+}
+int* compara_aposta(int *aposta, int *sorteio, int *qtda, int na, int ns){
+    
+    int *acertou, c=0;
+    for(int x=0;x<na; x++){
+        for(int i=0;i<ns;i++){
+            if(aposta[x] == sorteio[i]){
+                *qtda = (*qtda)+1;
+            }
+        }
+    }
+    acertou = (int*)  malloc(sizeof(int)*(*qtda));
+    for(int x=0;x<na;x++){
+        for(int i=0;i<ns;i++){
+            if(aposta[x] == sorteio[i]){
+                acertou[c] = aposta[x];
+                c++;
+            }
+        }
+    }
+    printf("\nOs numeros acertados foram: ");
+    for(int k=0; k<(*qtda); k++){
+        printf(" -%d- ", acertou[k]);
+    }
+    return acertou;
+}
+
+int main(){
+    int choice, *aposta, *sorteio, ns = 20, *acertos;
+    int qtda = 0;
+
+    printf("Escolha o numero de aposta que deseja fazer de 1 a 20: ");
+    scanf("%d", &choice);
+        if(choice<1 && choice>20){
+            printf("Opcao errada, reinicie o programa...");
+            return 1;
+        }
+    
+    ler_aposta(&aposta, choice);     //sem o & não está indo endereço, apenas os valores do array
+    sorteia_valores(&sorteio, ns);
+    acertos = compara_aposta(aposta,  sorteio, &qtda, choice, ns);
+
+    printf("\nOs numeros escolhidos foram: ");
+    for(int i=0; i<choice; i++){
+        printf(" -%d- ", aposta[i]);
+    }
+    printf("\nOs numeros sorteados foram: ");
+    for(int j=0; j<ns; j++){
+        printf(" -%d- ", sorteio[j]);
+    }
+    printf("\nOs numeros acertados foram: ");
+    for(int k=0; k<qtda; k++){
+        printf(" -%d- ", acertos[k]);
+    }
+    
+    return 0;
+}
